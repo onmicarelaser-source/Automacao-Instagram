@@ -1,0 +1,64 @@
+{
+  "application": {
+    "name": "Instagram Automation",
+    "version": "1.0.0",
+    "description": "Automação de posts e stories para Instagram",
+    "debug": false,
+    "timezone": "America/Sao_Paulo"
+  },
+  "scheduling": {
+    "posts": {
+      "enabled": true,
+      "time": "08:00",
+      "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+      "random_delay_minutes": 10
+    },
+    "stories": {
+      "enabled": true,
+      "time": "18:00",
+      "days": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"],
+      "random_delay_minutes": 5
+    }
+  },
+  "content": {
+    "posts_directory": "./assets/posts",
+    "stories_directory": "./assets/stories",
+    "supported_formats": [".jpg", ".jpeg", ".png", ".mp4"],
+    "max_file_size_mb": 100,
+    "post_caption_template": "#{hashtags}\n\n{description}\n\n{link}",
+    "story_duration_seconds": 15
+  },
+  "instagram": {
+    "api_version": "v19.0",
+    "max_retries": 3,
+    "retry_delay_seconds": 60,
+    "timeout_seconds": 30
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "./logs/automation.log",
+    "retention_days": 30,
+    "max_file_size_mb": 100,
+    "backup_count": 5
+  },
+  "database": {
+    "type": "sqlite",
+    "path": "./logs/posts_history.db"
+  },
+  "notifications": {
+    "enabled": false,
+    "email": {
+      "smtp_server": "smtp.gmail.com",
+      "smtp_port": 587,
+      "sender": "automation@seuemail.com",
+      "recipient": "admin@seuemail.com"
+    }
+  },
+  "backup": {
+    "enabled": true,
+    "path": "./backups",
+    "frequency_days": 7,
+    "max_backups": 10
+  }
+}

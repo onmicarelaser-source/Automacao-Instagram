@@ -1,0 +1,92 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pythonenv*
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+log.txt
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup
+backups/
+*.bak
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# OS Files
+Thumbs.db
+desktop.ini
+
+# Project Specific
+assets/posts/*.jpg
+assets/posts/*.png
+assets/stories/*.jpg
+assets/stories/*.png
+!assets/posts/placeholder.txt
+!assets/stories/placeholder.txt
+
+# Coverage Reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Build
+dist/
+build/
+*.egg-info/
+*.egg
+MANIFEST
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/

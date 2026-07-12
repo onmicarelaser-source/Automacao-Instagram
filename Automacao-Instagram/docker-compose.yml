@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  instagram-automation:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: instagram-automation
+    restart: unless-stopped
+    environment:
+      - TZ=America/Sao_Paulo
+      - INSTAGRAM_USERNAME=${INSTAGRAM_USERNAME}
+      - INSTAGRAM_PASSWORD=${INSTAGRAM_PASSWORD}
+      - INSTAGRAM_ACCOUNT_ID=${INSTAGRAM_ACCOUNT_ID}
+      - FACEBOOK_ACCESS_TOKEN=${FACEBOOK_ACCESS_TOKEN}
+      - POST_TIME=${POST_TIME:-08:00}
+      - STORY_TIME=${STORY_TIME:-18:00}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./assets:/app/assets
+      - ./config:/app/config
+      - ./logs:/app/logs
+      - ./backups:/app/backups
+      - ./.env:/app/.env
+    networks:
+      - automation-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: automation-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: automation
+      POSTGRES_PASSWORD: automation123
+      POSTGRES_DB: instagram_automation
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - automation-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  redis:
+    image: redis:7-alpine
+    container_name: automation-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - automation-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  nginx:
+    image: nginx:alpine
+    container_name: automation-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./static:/usr/share/nginx/html/static
+    depends_on:
+      - instagram-automation
+    networks:
+      - automation-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  automation-network:
+    driver: bridge
