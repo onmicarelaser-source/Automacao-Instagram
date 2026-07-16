@@ -1,11 +1,19 @@
-import google.generativeai as genai
+import importlib
 import json
 from config.api_config import APIConfig
 
 class GeradorGemini:
     def __init__(self):
-        genai.configure(api_key=APIConfig.GEMINI_API_KEY)
-        self.model = genai.GenerativeModel(APIConfig.GEMINI_MODEL)
+        self.available = False
+        self.model = None
+        self.genai = None
+        try:
+            self.genai = importlib.import_module('google.generativeai')
+            self.genai.configure(api_key=APIConfig.GEMINI_API_KEY)
+            self.model = self.genai.GenerativeModel(APIConfig.GEMINI_MODEL)
+            self.available = True
+        except Exception as e:
+            print(f"Aviso: Gemini não disponível ({e})")
     
     def gerar_legenda(self, tema, tipo="post", tom="profissional"):
         """Gera legenda usando Gemini"""
@@ -23,6 +31,8 @@ class GeradorGemini:
         }}
         """
         
+        if not self.available:
+            return self._fallback(tema)
         try:
             response = self.model.generate_content(prompt)
             return self._parse_json(response.text, tema)

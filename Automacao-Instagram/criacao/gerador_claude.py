@@ -1,11 +1,18 @@
-import anthropic
+import importlib
 import json
 from config.api_config import APIConfig
 
 class GeradorClaude:
     def __init__(self):
-        self.client = anthropic.Anthropic(api_key=APIConfig.CLAUDE_API_KEY)
+        self.available = False
+        self.client = None
         self.model = APIConfig.CLAUDE_MODEL
+        try:
+            anthropic = importlib.import_module('anthropic')
+            self.client = anthropic.Anthropic(api_key=APIConfig.CLAUDE_API_KEY)
+            self.available = True
+        except Exception as e:
+            print(f"Aviso: Claude não disponível ({e})")
     
     def revisar_legenda(self, legenda, tema):
         """Revisa e melhora a legenda usando Claude"""
@@ -25,6 +32,8 @@ class GeradorClaude:
         Responda APENAS com a legenda revisada.
         """
         
+        if not self.available:
+            return legenda
         try:
             response = self.client.messages.create(
                 model=self.model,
@@ -53,6 +62,8 @@ class GeradorClaude:
         Formato: lista numerada.
         """
         
+        if not self.available:
+            return "Ideias para posts geradas automaticamente."
         try:
             response = self.client.messages.create(
                 model=self.model,
@@ -60,5 +71,6 @@ class GeradorClaude:
                 messages=[{"role": "user", "content": prompt}]
             )
             return response.content[0].text
-        except:
+        except Exception as e:
+            print(f"Erro Claude: {e}")
             return "Ideias para posts geradas automaticamente."
