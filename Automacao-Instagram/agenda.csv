@@ -1,0 +1,8 @@
+data,hora,tema,tipo,tom,hashtags_personalizadas,publicado
+2026-07-20,10:00,Lançamento Produto,post,profissional,,False
+2026-07-20,15:00,Promoção Especial,story,promocional,,False
+2026-07-21,11:00,Dicas de Beleza,reel,divertido,,False
+2026-07-21,18:00,Depoimento Cliente,post,emocional,,False
+2026-07-22,09:00,Nova Tecnologia,post,informativo,,False
+2026-07-22,14:00,Oferta Relâmpago,story,urgente,,False
+2026-07-23,10:00,Tutorial Passo a Passo,reel,educativo,,False
