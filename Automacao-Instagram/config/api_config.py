@@ -32,18 +32,24 @@ class APIConfig:
     
     @classmethod
     def validar(cls):
-        erros = []
+        avisos = []
+        erros_fatais = []
+
         if not cls.GEMINI_API_KEY:
-            erros.append("GEMINI_API_KEY não configurada")
+            avisos.append("GEMINI_API_KEY não configurada (fallback de legenda será usado)")
         if not cls.CLAUDE_API_KEY:
-            erros.append("CLAUDE_API_KEY não configurada")
+            avisos.append("CLAUDE_API_KEY não configurada (fallback de revisão será usado)")
         if not cls.CANVA_API_KEY:
-            erros.append("CANVA_API_KEY não configurada")
+            avisos.append("CANVA_API_KEY não configurada (placeholder de imagem será usado)")
         if not cls.INSTAGRAM_ACCESS_TOKEN:
-            erros.append("INSTAGRAM_ACCESS_TOKEN não configurado")
+            erros_fatais.append("INSTAGRAM_ACCESS_TOKEN não configurado")
         if not cls.INSTAGRAM_ACCOUNT_ID:
-            erros.append("INSTAGRAM_ACCOUNT_ID não configurado")
-        
-        if erros:
-            raise Exception("Erros de configuração:\n" + "\n".join(erros))
+            erros_fatais.append("INSTAGRAM_ACCOUNT_ID não configurado")
+
+        if avisos:
+            print("Avisos de configuração:\n" + "\n".join(avisos))
+
+        if erros_fatais:
+            raise Exception("Erros de configuração:\n" + "\n".join(erros_fatais))
+
         return True
